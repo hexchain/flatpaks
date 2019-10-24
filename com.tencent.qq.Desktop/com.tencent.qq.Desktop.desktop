@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=2.0.0-b1
+Name=Tencent QQ
+Exec=tencent-qq
+Icon=com.tencent.qq.Desktop
+Terminal=false
+Type=Application
+Categories=Network;InstantMessaging;
+StartupNotify=true
+Name[zh_CN]=腾讯QQ

@@ -1,0 +1,120 @@
+{
+  "app-id": "com.tencent.qq.Desktop",
+  "runtime": "org.freedesktop.Platform",
+  "runtime-version": "18.08",
+  "sdk": "org.freedesktop.Sdk",
+  "command": "tencent-qq",
+  "finish-args": [
+    "--socket=x11",
+    "--socket=pulseaudio",
+    "--device=dri",
+    "--share=network",
+    "--talk-name=org.fcitx.Fcitx"
+  ],
+  "cleanup": [
+    "/share/ECM"
+  ],
+  "modules": [
+    "shared-modules/gtk2/gtk2.json",
+    {
+      "name": "extra-cmake-modules",
+      "buildsystem": "cmake-ninja",
+      "config-opts": [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DBUILD_HTML_DOCS=OFF",
+        "-DBUILD_QTHELP_DOCS=OFF",
+        "-DBUILD_TESTING=OFF"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://download.kde.org/stable/frameworks/5.63/extra-cmake-modules-5.63.0.tar.xz",
+          "sha256": "79926a0a2c6f5aa760a5a63209a7cad641476591b9bf4e51819f4fb752280792"
+        },
+        {
+          "type": "patch",
+          "path": "ECM-no-init.py.patch"
+        }
+      ]
+    },
+    {
+      "name": "fcitx-gtk2",
+      "buildsystem": "cmake-ninja",
+      "builddir": true,
+      "config-opts": [
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DGTK2_IM_MODULEDIR=/app/lib/gtk-2.0/2.10.0/immodules",
+        "-DENABLE_CAIRO=OFF",
+        "-DENABLE_DEBUG=OFF",
+        "-DENABLE_ENCHANT=OFF",
+        "-DENABLE_GIR=OFF",
+        "-DENABLE_GTK2_IM_MODULE=ON",
+        "-DENABLE_GTK3_IM_MODULE=OFF",
+        "-DENABLE_LIBXML2=OFF",
+        "-DENABLE_LUA=OFF",
+        "-DENABLE_OPENCC=OFF",
+        "-DENABLE_PANGO=OFF",
+        "-DENABLE_PANGO=OFF",
+        "-DENABLE_PINYIN=OFF",
+        "-DENABLE_PRESAGE=OFF",
+        "-DENABLE_QT=OFF",
+        "-DENABLE_SNOOPER=OFF",
+        "-DENABLE_SPELL=OFF",
+        "-DENABLE_TABLE=OFF",
+        "-DENABLE_TEST=OFF"
+      ],
+      "make-args": [
+        "src/frontend/gtk2/all"
+      ],
+      "install-rule": "src/frontend/gtk2/install",
+      "ensure-writable": [
+        "/lib/gtk-2.0/2.10.0/immodules.cache"
+      ],
+      "post-install": [
+        "gtk-query-immodules-2.0 > ${FLATPAK_DEST}/lib/gtk-2.0/2.10.0/immodules.cache"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://download.fcitx-im.org/fcitx/fcitx-4.2.9.6.tar.xz",
+          "sha256": "d55eee3f094037b5c32f0c5397d585fdf932cbc7d2091ed6f78fd7a9ae512c47"
+        }
+      ]
+    },
+    {
+      "name": "qq",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "url": "http://sqimg.qq.com/mqq_img/linuxQQ/linuxqq_2.0.0-b1-1024_x86_64.sh",
+          "sha256": "5b1697e45503ee10432b3db4d4b0653f041bb2a637fd28a2e17937ab099187d7"
+        },
+        {
+          "type": "script",
+          "dest-filename": "tencent-qq",
+          "commands": [
+            "exec /app/lib/tencent-qq/qq \"$@\""
+          ]
+        },
+        {
+          "type": "file",
+          "path": "com.tencent.qq.Desktop.desktop"
+        }
+      ],
+      "build-commands": [
+        "pwd",
+        "tail -n+33 linuxqq_2.0.0-b1-1024_x86_64.sh > linuxqq.tar.gz",
+        "mkdir -p build",
+        "tar -xvf linuxqq.tar.gz -C build --strip-components=3",
+        "install -Dm755 build/tencent-qq/qq -t /app/lib/tencent-qq",
+        "install -Dm644 build/tencent-qq/qq.bmp -t /app/lib/tencent-qq",
+        "install -Dm644 build/tencent-qq/res.db -t /app/lib/tencent-qq",
+        "install -Dm755 build/tencent-qq/crashpad_handler -t /app/lib/tencent-qq",
+        "install -Dm644 build/tencent-qq/qq.png /app/share/icons/hicolor/48x48/apps/com.tencent.qq.Desktop.png",
+        "install -Dm644 com.tencent.qq.Desktop.desktop -t /app/share/applications/",
+        "install -Dm755 tencent-qq /app/bin/tencent-qq"
+      ]
+    }
+  ]
+}
