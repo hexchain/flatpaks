@@ -9,7 +9,9 @@
     "--socket=pulseaudio",
     "--device=dri",
     "--share=network",
-    "--talk-name=org.fcitx.Fcitx"
+    "--share=ipc",
+    "--talk-name=org.fcitx.Fcitx",
+    "--talk-name=org.freedesktop.portal.Fcitx"
   ],
   "cleanup": [
     "/share/ECM"
@@ -103,7 +105,6 @@
         }
       ],
       "build-commands": [
-        "pwd",
         "tail -n+33 linuxqq_2.0.0-b1-1024_x86_64.sh > linuxqq.tar.gz",
         "mkdir -p build",
         "tar -xvf linuxqq.tar.gz -C build --strip-components=3",
