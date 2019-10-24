@@ -73,7 +73,7 @@
         "/lib/gtk-2.0/2.10.0/immodules.cache"
       ],
       "post-install": [
-        "gtk-query-immodules-2.0 > ${FLATPAK_DEST}/lib/gtk-2.0/2.10.0/immodules.cache"
+        "gtk-query-immodules-2.0 --update-cache"
       ],
       "sources": [
         {
