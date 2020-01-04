@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+    <id>com.tencent.QQ</id>
+    <name>Tencent QQ</name>
+    <name xml:lang="zh_CN">腾讯QQ</name>
+    <developer_name>Tencent Inc.</developer_name>
+    <summary>An instant messaging software service.</summary>
+    <launchable type="desktop-id">com.tencent.QQ.desktop</launchable>
+    <categories>
+        <category>Network</category>
+        <category>InstantMessaging</category>
+    </categories>
+    <description>
+        <p>An instant messaging software service.</p>
+    </description>
+    <metadata_license>CC0-1.0</metadata_license>
+    <project_license>LicenseRef-proprietary=https://ti.qq.com/agreement/index.html</project_license>
+    <url type="homepage">https://www.qq.com/</url>
+    <screenshots>
+        <screenshot type="default">
+            <caption>Main window</caption>
+            <image height="817" width="350">https://im.qq.com/linuxqq/images/index_pic.png</image>
+        </screenshot>
+    </screenshots>
+    <releases>
+        <release data="2019-10-24" version="2.0.0b1" />
+    </releases>
+    <content_rating type="oars-1.1" />
+</component>
