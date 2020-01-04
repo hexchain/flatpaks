@@ -1,0 +1,48 @@
+{
+  "app-id": "com.baidu.NetDisk",
+  "runtime": "org.freedesktop.Platform",
+  "runtime-version": "19.08",
+  "sdk": "org.freedesktop.Sdk",
+  "command": "baidunetdisk",
+  "rename-icon": "baidunetdisk",
+  "finish-args": [
+    "--socket=x11",
+    "--socket=pulseaudio",
+    "--device=dri",
+    "--share=network",
+    "--share=ipc",
+    "--filesystem=home"
+  ],
+  "build-options": {
+    "strip": false,
+    "no-debuginfo": true
+  },
+  "modules": [
+    {
+      "name": "baidunetdisk",
+      "buildsystem": "simple",
+      "sources": [
+        {
+          "type": "file",
+          "url": "https://issuecdn.baidupcs.com/issue/netdisk/LinuxGuanjia/3.0.1/baidunetdisk_linux_3.0.1.2.rpm",
+          "sha256": "0da847c71054d05b96ec3ce809f33cb764669d740ac94a0b1cd08b1fe2b4d16f"
+        },
+        {
+          "type": "file",
+          "path": "com.baidu.NetDisk.desktop"
+        }
+      ],
+      "cleanup": [
+        "/share/icons/hicolor/1024x1024"
+      ],
+      "build-commands": [
+        "bsdtar -xf baidunetdisk_linux_3.0.1.2.rpm",
+        "mkdir -p /app/lib/ /app/bin/ /app/share/{icons,applications}",
+        "cp --no-preserve=ownership -rv opt/baidunetdisk /app/lib",
+        "cp --no-preserve=ownership -rv usr/share/icons/hicolor /app/share/icons",
+        "cp com.baidu.NetDisk.desktop /app/share/applications",
+        "ln -sf /app/lib/baidunetdisk/baidunetdisk /app/bin/baidunetdisk"
+      ]
+    }
+  ]
+}
