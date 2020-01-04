@@ -16,6 +16,10 @@
   "cleanup": [
     "/share/ECM"
   ],
+  "separate-locales": false,
+  "build-options": {
+    "no-debuginfo": true
+  },
   "modules": [
     "shared-modules/gtk2/gtk2.json",
     {
@@ -83,33 +87,55 @@
       "buildsystem": "simple",
       "sources": [
         {
-          "type": "file",
-          "url": "http://sqimg.qq.com/mqq_img/linuxQQ/linuxqq_2.0.0-b1-1024_x86_64.sh",
-          "sha256": "5b1697e45503ee10432b3db4d4b0653f041bb2a637fd28a2e17937ab099187d7"
+          "type": "extra-data",
+          "filename": "qq.rpm",
+          "url": "https://qd.myapp.com/myapp/qqteam/linuxQQ/linuxqq_2.0.0-b1-1024_x86_64.rpm",
+          "only-arches": ["x86_64"],
+          "sha256": "08b22ec2664773613dc2fbc7a32b880df20762706477846337bcadc0c48d6d5e",
+          "size": 11341084
+        },
+        {
+          "type": "extra-data",
+          "filename": "qq.rpm",
+          "url": "https://qd.myapp.com/myapp/qqteam/linuxQQ/linuxqq_2.0.0-b1-1024_aarch64.rpm",
+          "only-arches": ["aarch64"],
+          "sha256": "85b3928426884999c48b1e07b1e7de59a8c8ef6c660e33aa613d5aed20f9fbb5",
+          "size": 10198084
+        },
+        {
+          "type": "extra-data",
+          "filename": "qq.rpm",
+          "url": "https://qd.myapp.com/myapp/qqteam/linuxQQ/linuxqq_2.0.0-b1-1024_mips64el.rpm",
+          "only-arches": ["mips64el"],
+          "sha256": "099f72d9dae507ea74491b64e47281434d5aacd19433c8d54242d29bdeab01b5",
+          "size": 10394276
         },
         {
           "type": "script",
           "dest-filename": "tencent-qq",
           "commands": [
-            "exec /app/lib/tencent-qq/qq \"$@\""
+            "exec /app/extra/tencent-qq/qq \"$@\""
           ]
         },
         {
           "type": "file",
           "path": "com.tencent.QQ.desktop"
+        },
+        {
+          "type": "script",
+          "dest-filename": "apply_extra",
+          "commands": [
+            "bsdtar -xvf qq.rpm",
+            "mv usr/share/tencent-qq .",
+            "rm -rf qq.rpm usr",
+            "install -Dm644 tencent-qq/qq.png /app/extra/export/share/icons/hicolor/48x48/apps/com.tencent.QQ.png"
+          ]
         }
       ],
       "build-commands": [
-        "tail -n+33 linuxqq_2.0.0-b1-1024_x86_64.sh > linuxqq.tar.gz",
-        "mkdir -p build",
-        "tar -xvf linuxqq.tar.gz -C build --strip-components=3",
-        "install -Dm755 build/tencent-qq/qq -t /app/lib/tencent-qq",
-        "install -Dm644 build/tencent-qq/qq.bmp -t /app/lib/tencent-qq",
-        "install -Dm644 build/tencent-qq/res.db -t /app/lib/tencent-qq",
-        "install -Dm755 build/tencent-qq/crashpad_handler -t /app/lib/tencent-qq",
-        "install -Dm644 build/tencent-qq/qq.png /app/share/icons/hicolor/48x48/apps/com.tencent.QQ.png",
         "install -Dm644 com.tencent.QQ.desktop -t /app/share/applications/",
-        "install -Dm755 tencent-qq /app/bin/tencent-qq"
+        "install -Dm755 tencent-qq -t /app/bin/",
+        "install -Dm755 apply_extra -t /app/bin/"
       ]
     }
   ]
